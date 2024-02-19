@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Revisar la llamada de node_modules de arriba. -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        .flex-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #main {
+            width: 100%;
+            padding: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            width: 20%;
+            margin: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                width: 40%;
+            }
+        }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        h1 {
+            text-align: center;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Vuelos</h1>
+    <main class="flex-container">
+        <a href="/vuelos/create" class="btn btn-secondary">Crear</a>
+        <div id="main"></div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let main = document.getElementById('main');
+
+        // Realizar una solicitud GET a la ruta "/vuelos-all" en el servidor
+        axios.get('/vuelos-all')
+            .then(response => {
+                // Procesar los datos recibidos
+                response.data.forEach(vuelo => {
+                    // Crear elementos HTML para mostrar los datos del vuelo
+                    let div1 = document.createElement('div');
+                    div1.setAttribute('class', 'card');
+
+                    let div2 = document.createElement('div');
+                    div2.classList.add('card-body');
+
+                    let h5 = document.createElement('h5');
+                    h5.classList.add('card-title');
+                    h5.textContent = vuelo.numero_vuelo;
+                    div2.appendChild(h5);
+
+                    let p = document.createElement('p');
+                    p.classList.add('card-text');
+                    p.textContent = `Aerolinea: ${vuelo.aerolinea}, Origen: ${vuelo.origen}, Destino: ${vuelo.destino}, Fecha Salida: ${vuelo.fecha_salida}, Hora Salida: ${vuelo.hora_salida}, Fecha Llegada: ${vuelo.fecha_llegada}, Hora Llegada: ${vuelo.hora_llegada}`;
+                    div2.appendChild(p);
+
+                    let a3 = document.createElement('a');
+                    a3.classList.add('btn', 'btn-danger');
+                    a3.textContent = 'Eliminar';
+                    a3.addEventListener("click", (event) => {
+                        event.preventDefault();
+                        fetch(`/vuelos/delete/${vuelo.id}`, {
+                            method: "DELETE"
+                        });
+                        location.reload();
+                    });
+                    div2.appendChild(a3);
+
+                    let a2 = document.createElement('a');
+                    a2.classList.add('btn', 'btn-warning');
+                    a2.textContent = 'Editar';
+                    a2.setAttribute('href', `/vuelos/edit/${vuelo.id}`);
+                    div2.appendChild(a2);
+
+                    div1.appendChild(div2);
+                    main.appendChild(div1);
+                });
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos de vuelos:', error);
+            });
+    </script>
+</body>
+
+</html>

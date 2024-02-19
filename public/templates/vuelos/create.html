@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Revisar la llamada de node_modules de arriba. -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        .flex-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #main {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        form {
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .mb-3 {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Vuelos CREATE</h1>
+    <main class="flex-container">
+        <div id="main">
+            <form action="/vuelos/save" method="POST">
+                <div class="mb-3">
+                    <label for="numero_vuelo" class="form-label">Número de vuelo</label>
+                    <input name="numero_vuelo" type="text" class="form-control" id="numero_vuelo"
+                        placeholder="Ejemplo: VL123">
+                </div>
+                <div class="mb-3">
+                    <label for="aerolinea" class="form-label">Aerolínea</label>
+                    <input name="aerolinea" type="text" class="form-control" id="aerolinea"
+                        placeholder="Ejemplo: Iberia">
+                </div>
+                <div class="mb-3">
+                    <label for="origen" class="form-label">Origen</label>
+                    <input name="origen" type="text" class="form-control" id="origen" placeholder="Ejemplo: Madrid">
+                </div>
+                <div class="mb-3">
+                    <label for="destino" class="form-label">Destino</label>
+                    <input name="destino" type="text" class="form-control" id="destino"
+                        placeholder="Ejemplo: Barcelona">
+                </div>
+                <div class="mb-3">
+                    <label for="fecha_salida" class="form-label">Fecha de salida</label>
+                    <input name="fecha_salida" type="date" class="form-control" id="fecha_salida">
+                </div>
+                <div class="mb-3">
+                    <label for="hora_salida" class="form-label">Hora de salida</label>
+                    <input name="hora_salida" type="time" class="form-control" id="hora_salida">
+                </div>
+                <div class="mb-3">
+                    <label for="fecha_llegada" class="form-label">Fecha de llegada</label>
+                    <input name="fecha_llegada" type="date" class="form-control" id="fecha_llegada">
+                </div>
+                <div class="mb-3">
+                    <label for="hora_llegada" class="form-label">Hora de llegada</label>
+                    <input name="hora_llegada" type="time" class="form-control" id="hora_llegada">
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar</button>
+                <a href="/vuelos/index" class="btn btn-secondary">Atras</a>
+
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuelo EDIT</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        .flex-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #main {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        form {
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .mb-3 {
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .btn {
+            margin-top: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Vuelo EDIT</h1>
+    <main class="flex-container">
+        <div id="main">
+            <form>
+                <div class="form-group mb-3">
+                    <input name="numero_vuelo" class="form-control form-control-lg" type="text"
+                        aria-label=".form-control-lg example" placeholder="Número de vuelo">
+                </div>
+                <div class="form-group mb-3">
+                    <input name="aerolinea" class="form-control form-control-lg" type="text"
+                        aria-label=".form-control-lg example" placeholder="Aerolínea">
+                </div>
+                <div class="form-group mb-3">
+                    <input name="origen" class="form-control form-control-lg" type="text"
+                        aria-label=".form-control-lg example" placeholder="Origen">
+                </div>
+                <div class="form-group mb-3">
+                    <input name="destino" class="form-control form-control-lg" type="text"
+                        aria-label=".form-control-lg example" placeholder="Destino">
+                </div>
+                <div class="form-group mb-3">
+                    <input name="fecha_salida" class="form-control form-control-lg" type="text"
+                        aria-label=".form-control-lg example" placeholder="Fecha de salida">
+                </div>
+                <div class="form-group mb-3">
+                    <input name="hora_salida" class="form-control form-control-lg" type="text"
+                        aria-label=".form-control-lg example" placeholder="Hora de salida">
+                </div>
+                <div class="form-group mb-3">
+                    <input name="fecha_llegada" class="form-control form-control-lg" type="text"
+                        aria-label=".form-control-lg example" placeholder="Fecha de llegada">
+                </div>
+                <div class="form-group mb-3">
+                    <input name="hora_llegada" class="form-control form-control-lg" type="text"
+                        aria-label=".form-control-lg example" placeholder="Hora de llegada">
+                </div>
+                <button type="button" onclick="update()" class="btn btn-primary btn-submit">Actualizar</button>
+                <a href="/vuelos/index" class="btn btn-secondary">Atras</a>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let elementos_formulario = document.forms[0].elements;
+
+        let path = window.location.pathname.split("/");
+        let id = path[path.length - 1];
+
+        fetch(`/vuelos/${id}`)
+            .then((response) => response.json())
+            .then((vuelo) => {
+                console.log(vuelo);
+                elementos_formulario.numero_vuelo.value = vuelo[0].numero_vuelo;
+                elementos_formulario.aerolinea.value = vuelo[0].aerolinea;
+                elementos_formulario.origen.value = vuelo[0].origen;
+                elementos_formulario.destino.value = vuelo[0].destino;
+                elementos_formulario.fecha_salida.value = vuelo[0].fecha_salida;
+                elementos_formulario.hora_salida.value = vuelo[0].hora_salida;
+                elementos_formulario.fecha_llegada.value = vuelo[0].fecha_llegada;
+                elementos_formulario.hora_llegada.value = vuelo[0].hora_llegada;
+            });
+
+        function update() {
+            let vuelo = {
+                numero_vuelo: elementos_formulario.numero_vuelo.value,
+                aerolinea: elementos_formulario.aerolinea.value,
+                origen: elementos_formulario.origen.value,
+                destino: elementos_formulario.destino.value,
+                fecha_salida: elementos_formulario.fecha_salida.value,
+                hora_salida: elementos_formulario.hora_salida.value,
+                fecha_llegada: elementos_formulario.fecha_llegada.value,
+                hora_llegada: elementos_formulario.hora_llegada.value
+            };
+
+            fetch(`/vuelos/update/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(vuelo)
+            })
+                .then((response) => response.json())
+                .then((respuesta) => {
+                    if (respuesta.message == true) {
+                        window.location.href = "/vuelos/index";
+                    } else {
+                        // Manejo de error
+                    }
+                });
+        }
+    </script>
+</body>
+
+</html>
